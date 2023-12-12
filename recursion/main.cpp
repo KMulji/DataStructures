@@ -40,6 +40,26 @@ int fact(int n){
     }
     return fact(n-1)*n;
 }
+/*
+    Write a function to determine combinations.
+*/
+int combination(int n,int r){
+    if(r==0||n==r){
+        return 1;
+    }
+    return combination(n-1,r-1)+combination(n-1,r);
+}
+/*
+    Write a function for tower of hanoi problem.
+*/
+void TOH(int n,int A,int B, int C){
+    if(n==0){
+        return;
+    }
+    TOH(n-1,A,C,B);
+    std::cout<<"From "<<A<<" To "<<C<<std::endl;
+    TOH(n-1,B,A,C);
+}
 int main()
 {
     std::cout<<fact(3)<<std::endl;
