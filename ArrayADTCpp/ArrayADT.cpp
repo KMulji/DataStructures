@@ -1,0 +1,468 @@
+#include <iostream>
+#include <stdlib.h>
+#include "ArrayADT.hpp"
+#include <limits.h>
+template <typename T>
+ArrayADT<T>::ArrayADT()
+{
+    this->size = 10;
+    this->length = 0;
+    this->p = new T[this->size];
+}
+template <typename T>
+ArrayADT<T>::ArrayADT(int size)
+{
+    this->size = size;
+    this->length = 0;
+    this->p = new T[this->size];
+}
+template <typename T>
+T *ArrayADT<T>::Grow(T *old, int newSize, int length)
+{
+    T *temp = new T[newSize];
+    int i;
+    for (i = 0; i < length; i++)
+    {
+        temp[i] = p[i];
+    }
+    delete[] old;
+    old = temp;
+    temp = nullptr;
+    return old;
+}
+template <typename T>
+T *ArrayADT<T>::Shrink(T *olds, int length, int newSize)
+{
+    T *temp = new T[newSize];
+    for (int i = 0; i < length; i++)
+    {
+        temp[i] = olds[i];
+    }
+    delete[] olds;
+    olds = temp;
+    temp = nullptr;
+    return olds;
+}
+template <typename T>
+void ArrayADT<T>::swap(T *a, T *b)
+{
+    T temp = *a;
+    *a = *b;
+    *b = temp;
+}
+template <typename T>
+void ArrayADT<T>::Display()
+{
+    for (int i = 0; i < this->length; i++)
+    {
+        std::cout << this->p[i] << " ";
+    }
+    std::cout << std::endl;
+}
+template <typename T>
+void ArrayADT<T>::Append(T elem)
+{
+    if (this->length == this->size)
+    {
+
+        this->size = 2 * this->size;
+        this->p = Grow(this->p, 2 * this->size, this->length);
+    }
+
+    this->p[this->length] = elem;
+    this->length++;
+}
+template <typename T>
+void ArrayADT<T>::Insert(int idx, T elem)
+{
+    if (idx < 0 || idx > this->length)
+    {
+        printf("Error out of bounds\n");
+        return;
+    }
+    if (this->length == this->size)
+    {
+        // resize array
+        this->size = 2 * this->size;
+        this->p = Grow(this->p, this->size, this->length);
+    }
+    int r = this->length;
+    while (r != idx)
+    {
+        this->p[r] = this->p[r - 1];
+        r--;
+    }
+    this->p[idx] = elem;
+    this->length++;
+}
+template <typename T>
+
+T ArrayADT<T>::Delete(int idx)
+{
+    if (idx < 0 || idx > this->length - 1)
+    {
+        return -1;
+    }
+    if (this->length == this->size / 2)
+    {
+        this->size = this->size * 0.5;
+        this->p = Shrink(this->p, this->length, this->size);
+    }
+    int ans = this->p[idx];
+
+    for (int i = idx; i < this->length - 1; i++)
+    {
+        this->p[i] = this->p[i + 1];
+    }
+    this->length--;
+
+    return ans;
+}
+template <typename T>
+int ArrayADT<T>::LinearSearch(T key)
+{
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] == key)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+template <typename T>
+int ArrayADT<T>::BinSearch(T key)
+{
+    int lo = 0;
+    int hi = this->length - 1;
+    int mid = -1;
+    while (lo <= hi)
+    {
+        mid = lo + (hi - lo) / 2;
+        if (this->p[mid] == key)
+        {
+            return mid;
+        }
+        if (key < this->p[mid])
+        {
+            hi = mid - 1;
+        }
+        else
+        {
+            lo = mid + 1;
+        }
+    }
+    return -1;
+}
+template <typename T>
+int ArrayADT<T>::BinSearchRecur(T key, int lo, int hi, int mid)
+{
+    if (lo > hi)
+    {
+        return -1;
+    }
+    mid = lo + (hi - lo) / 2;
+    if (this->p[mid] == key)
+    {
+        return mid;
+    }
+    if (key < this->p[mid])
+    {
+        return BinSearchRecur(key, lo, hi = mid - 1, mid);
+    }
+    else
+    {
+        return BinSearchRecur(key, lo = mid + 1, hi, mid);
+    }
+    return -1;
+}
+template <typename T>
+T ArrayADT<T>::Get(int x)
+{
+    if (x < 0 || x > this->length - 1)
+    {
+        printf("index out of bound");
+        return -1;
+    }
+    return this->p[x];
+}
+template <typename T>
+void ArrayADT<T>::Set(int x, T elem)
+{
+    if (x < 0 || x > this->length - 1)
+    {
+        printf("index out of bound");
+    }
+    this->p[x] = elem;
+}
+template <typename T>
+T ArrayADT<T>::Max()
+{
+    T ans = INT_MIN;
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] >= ans)
+        {
+            ans = this->p[i];
+        }
+    }
+    return ans;
+}
+template <typename T>
+T ArrayADT<T>::Min()
+{
+    int ans = INT_MAX;
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] <= ans)
+        {
+            ans = this->p[i];
+        }
+    }
+    return ans;
+}
+template <typename T>
+T ArrayADT<T>::Sum()
+{
+    T sum = 0;
+    for (int i = 0; i < this->length; i++)
+    {
+        sum += this->p[i];
+    }
+    return sum;
+}
+template <typename T>
+float ArrayADT<T>::Avg()
+{
+    float total = 0.f;
+    for (int i = 0; i < this->length; i++)
+    {
+        total += this->p[i];
+    }
+    return total / this->length;
+}
+template <typename T>
+void ArrayADT<T>::Reverse()
+{
+
+    if (!this->p)
+    {
+        return;
+    }
+    T *p = &this->p[0];
+    T *q = &this->p[this->length - 1];
+
+    while (p != q)
+    {
+        T temp = *p;
+        *p = *q;
+        *q = temp;
+        p++;
+        q--;
+    }
+}
+template <typename T>
+void ArrayADT<T>::InsertSorted(T elem)
+{
+
+    if (!this->p)
+    {
+        return;
+    }
+    if (this->size == this->length)
+    {
+        // resize
+        Grow(this->p, 2 * this->size, this->length);
+    }
+    int q = this->length - 1;
+
+    while (q >= 0 && this->p[q] > elem)
+    {
+
+        this->p[q + 1] = this->p[q];
+        q--;
+    }
+    this->p[q + 1] = elem;
+    this->length++;
+}
+template <typename T>
+bool ArrayADT<T>::IsSorted()
+{
+
+    if (!this->p)
+    {
+        return true;
+    }
+    for (int i = 0; i < this->length - 1; i++)
+    {
+        if (this->p[i] > this->p[i + 1])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+template <typename T>
+void ArrayADT<T>::NegativeSort()
+{
+    int i = 0;
+    int j = this->length - 1;
+
+    while (i < j)
+    {
+        while (this->p[i] < 0)
+        {
+            i++;
+        }
+        while (this->p[j] > 0)
+        {
+            j--;
+        }
+        if (i < j)
+        {
+            swap(&this->p[i], &this->p[j]);
+        }
+    }
+}
+template <typename T>
+void ArrayADT<T>::Merge(ArrayADT<T> *q, ArrayADT<T> *a)
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    while (i < this->length && j < q->length)
+    {
+        if (this->p[i] < q->p[j])
+        {
+            a->p[k] = this->p[i];
+            a->length++;
+            i++;
+            k++;
+        }
+        else
+        {
+            a->p[k] = q->p[j];
+            a->length++;
+            j++;
+            k++;
+        }
+    }
+    for (; i < this->length; i++)
+    {
+        a->p[k] = this->p[i];
+        a->length++;
+        k++;
+    }
+    for (; j < q->length; j++)
+    {
+        a->p[k] = q->p[j];
+        a->length++;
+        k++;
+    }
+}
+template <typename T>
+void ArrayADT<T>::Union(ArrayADT<T> *q, ArrayADT<T> *a)
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    while (i < this->length && j < q->length)
+    {
+        if (this->p[i] < q->p[j])
+        {
+            a->p[k] = this->p[i];
+            i++;
+            k++;
+        }
+        else if (q->p[j] < this->p[i])
+        {
+            a->p[k] = q->p[j];
+            j++;
+            k++;
+        }
+        else
+        {
+            a->p[k] = this->p[i];
+            i++;
+            k++;
+            j++;
+        }
+    }
+    for (; i < this->length; i++)
+    {
+        a->p[k] = this->p[i];
+        k++;
+    }
+    for (; j < q->length; j++)
+    {
+
+        a->p[k] = q->p[j];
+        k++;
+    }
+    a->length = k;
+}
+template <typename T>
+void ArrayADT<T>::Intersection(ArrayADT<T> *q, ArrayADT<T> *a)
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    while (i < this->length && j < q->length)
+    {
+        if (this->p[i] < q->p[j])
+        {
+
+            i++;
+        }
+        else if (q->p[j] < this->p[i])
+        {
+
+            j++;
+        }
+        else if (this->p[i] == q->p[j])
+        {
+            a->p[k] = this->p[i];
+            i++;
+            j++;
+            k++;
+        }
+    }
+    a->length = k;
+}
+template <typename T>
+void ArrayADT<T>::Difference(ArrayADT<T> *q, ArrayADT<T> *a)
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+
+    while (i < this->length && j < q->length)
+    {
+
+        if (this->p[i] < q->p[j])
+        {
+            a->p[k] = this->p[i];
+            i++;
+            k++;
+        }
+        else if (q->p[j] < this->p[i])
+        {
+            j++;
+        }
+        else
+        {
+            i++;
+            j++;
+        }
+    }
+    for (; i < this->length; i++)
+    {
+        a->p[k] = this->p[i];
+        k++;
+    }
+    a->length = k;
+}
+template class ArrayADT<int>;
+template class ArrayADT<double>;
+template class ArrayADT<float>;

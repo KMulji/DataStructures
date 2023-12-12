@@ -33,7 +33,7 @@ void Append(struct ArrayADT *a, int elem)
     {
 
         a->size = 2 * a->size;
-        a->p = Grow(a->p, 2 * a->size);
+        a->p = Grow(a->p, 2 * a->size,a->length);
     }
 
     a->p[a->length] = elem;
@@ -50,7 +50,7 @@ void Insert(struct ArrayADT *a, int idx, int elem)
     {
         // resize array
         a->size = 2 * a->size;
-        a->p = Grow(a->p, 2 * a->size);
+        a->p = Grow(a->p, a->size,a->length);
     }
     int r = a->length;
     while (r != idx)
@@ -69,8 +69,8 @@ int Delete(struct ArrayADT *a, int idx)
     }
     if (a->length == a->size / 2)
     {
-        a->size = a->size / 2;
-        a->p = Shrink(a->p, a->length, a->size * 0.5);
+        a->size = a->size *0.5;
+        a->p = Shrink(a->p, a->length, a->size);
     }
     int ans = a->p[idx];
 
@@ -82,11 +82,11 @@ int Delete(struct ArrayADT *a, int idx)
 
     return ans;
 }
-int *Grow(int *p, int newSize)
+int *Grow(int *p, int newSize,int length)
 {
     int *temp = (int *)malloc(newSize * sizeof(int));
     int i;
-    for (i = 0; i < newSize; i++)
+    for (i = 0; i < length; i++)
     {
         temp[i] = p[i];
     }
@@ -185,12 +185,13 @@ int BinSearchRecur(struct ArrayADT *a, int key, int lo, int hi, int mid)
     }
     if (key < a->p[mid])
     {
-        BinSearchRecur(a, key, lo, hi = mid - 1, mid);
+        return BinSearchRecur(a, key, lo, hi = mid - 1, mid);
     }
     else
     {
-        BinSearchRecur(a, key, lo = mid + 1, hi, mid);
+        return BinSearchRecur(a, key, lo = mid + 1, hi, mid);
     }
+    return -1;
 }
 int Get(struct ArrayADT *p, int x)
 {
@@ -201,12 +202,12 @@ int Get(struct ArrayADT *p, int x)
     }
     return p->p[x];
 }
-int Set(struct ArrayADT *p, int x, int elem)
+void Set(struct ArrayADT *p, int x, int elem)
 {
     if (x < 0 || x > p->length - 1)
     {
         printf("index out of bound");
-        return -1;
+        
     }
     p->p[x] = elem;
 }
@@ -287,7 +288,7 @@ void InsertSorted(struct ArrayADT *a, int elem)
     if (a->size == a->length)
     {
         // resize
-        Grow(a->p, 2 * a->size);
+        Grow(a->p, 2 * a->size,a->length);
     }
     int q = a->length - 1;
 
@@ -448,6 +449,30 @@ void Intersection(struct ArrayADT *p, struct ArrayADT *q, struct ArrayADT *a)
             k++;
             
         }
+    }
+    a->length=k;
+}
+void Difference(struct ArrayADT*p,struct ArrayADT*q,struct ArrayADT *a){
+    int i=0;
+    int j=0;
+    int k=0;
+
+    while(i<p->length&&j<q->length){
+
+        if(p->p[i]<q->p[j]){
+            a->p[k]=p->p[i];
+            i++;
+            k++;
+        }else if(q->p[j]<p->p[i]){
+            j++;
+        }else{
+            i++;
+            j++;
+        }
+    }
+    for(;i<p->length;i++){
+        a->p[k]=p->p[i];
+        k++;
     }
     a->length=k;
 }
