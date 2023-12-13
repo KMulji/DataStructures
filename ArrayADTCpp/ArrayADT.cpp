@@ -624,6 +624,52 @@ void ArrayADT<T>::DisplayDuplicatesCount3()
         }
     }
 }
+template <typename T>
+void ArrayADT<T>::TwoSum(int k)
+{
+    int max = INT_MIN;
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] > max)
+        {
+            max = this->p[i];
+        }
+    }
+    int A[max + 1];
+    for (int i = 0; i < max + 1; i++)
+    {
+        A[i] = 0;
+    }
+    for (int i = 0; i < this->length; i++)
+    {
+        if (A[k - i] != 0)
+        {
+            std::cout << this->p[i] << " " << k - this->p[i] << std::endl;
+        }
+        int p = this->p[i];
+        A[p]++;
+    }
+}
+template <typename T>
+void ArrayADT<T>::TwoSumSorted(int k)
+{
+    int i = 0;
+    int j = this->length - 1;
+
+    while (i < j)
+    {
+        if(this->p[i]+this->p[j]==k){
+            std::cout<<this->p[i]<<" "<<this->p[j]<<std::endl;
+            i++;
+            j--;
+        }
+        else if(this->p[i]+this->p[j]>k){
+            j--;
+        }else if(this->p[i]+this->p[j]<k){
+            i++;
+        }
+    }
+}
 template class ArrayADT<int>;
 template class ArrayADT<double>;
 template class ArrayADT<float>;

@@ -53,5 +53,9 @@ public:
     void DisplayDuplicatesCount2();
     /*Display the duplicates along with the count in a sorted array using inefficient method*/
     void DisplayDuplicatesCount3();
+    /*Find a pair with a sum of k in a unsorted/sorted array*/
+    void TwoSum(int k);
+    /*Fina a pair with sum of k in a sorted array*/
+    void TwoSumSorted(int k);
 };
 #endif
