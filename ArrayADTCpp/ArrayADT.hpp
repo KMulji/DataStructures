@@ -39,5 +39,19 @@ public:
     void Union( ArrayADT<T> *q, ArrayADT<T> *a);
     void Intersection(ArrayADT<T> *q, ArrayADT<T> *a);
     void Difference(ArrayADT<T> *q, ArrayADT<T> *a);
+    /*Finds a single missing elemets in a sorted array*/
+    void SingleMissingElem();
+    /*Finds multiple missing elements in a sorted array*/
+    void MultipleMissingElem();
+    /*Find multiple missing elements in a unsorted array*/
+    void MultMissing();
+    /*Display the duplicates in the sorted array*/
+    void DisplayDuplicates();
+    /*Display the duplicates along with the count in a sorted array*/
+    void DisplayDuplicatesCount();
+    /*Display the duplicates along with count in a sorted/unsorted array*/
+    void DisplayDuplicatesCount2();
+    /*Display the duplicates along with the count in a sorted array using inefficient method*/
+    void DisplayDuplicatesCount3();
 };
 #endif

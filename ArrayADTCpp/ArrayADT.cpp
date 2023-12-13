@@ -463,6 +463,167 @@ void ArrayADT<T>::Difference(ArrayADT<T> *q, ArrayADT<T> *a)
     }
     a->length = k;
 }
+template <typename T>
+void ArrayADT<T>::SingleMissingElem()
+{
+    int lo = this->p[0];
+    int diff = lo - 0;
+
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] - i != diff)
+        {
+            std::cout << i + diff << std::endl;
+            return;
+        }
+    }
+}
+template <typename T>
+void ArrayADT<T>::MultipleMissingElem()
+{
+    int diff = this->p[0] - 0;
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] - i != diff)
+        {
+            while (diff < this->p[i] - i)
+            {
+                std::cout << i + diff << std::endl;
+                diff++;
+            }
+        }
+    }
+}
+template <typename T>
+
+void ArrayADT<T>::MultMissing()
+{
+    int min = INT_MAX;
+    int max = INT_MIN;
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] < min)
+        {
+            min = this->p[i];
+        }
+    }
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] > max)
+        {
+            max = this->p[i];
+        }
+    }
+    int A[max + 1];
+
+    for (int i = 0; i < max + 1; i++)
+    {
+        A[i] = 0;
+    }
+
+    for (int i = 0; i < this->length; i++)
+    {
+        int a = this->p[i];
+        A[a]++;
+    }
+
+    for (int i = min; i < max + 1; i++)
+    {
+        if (A[i] == 0)
+        {
+            std::cout << i << std::endl;
+        }
+    }
+}
+template <typename T>
+void ArrayADT<T>::DisplayDuplicates()
+{
+    int lastDuplicate = -1;
+
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] == this->p[i + 1] && this->p[i] != lastDuplicate)
+        {
+            std::cout << this->p[i] << std::endl;
+            lastDuplicate = this->p[i];
+        }
+    }
+}
+template <typename T>
+void ArrayADT<T>::DisplayDuplicatesCount()
+{
+    int j = 0;
+    for (int i = 0; i < this->length - 1; i++)
+    {
+        if (this->p[i] == this->p[i + 1])
+        {
+            j = i + 1;
+            while (this->p[j] == this->p[i])
+            {
+                j++;
+            }
+            std::cout << this->p[i] << " " << j - i << std::endl;
+            i = j - 1;
+        }
+    }
+}
+template <typename T>
+void ArrayADT<T>::DisplayDuplicatesCount2()
+{
+    int max = INT_MIN;
+
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] > max)
+        {
+            max = this->p[i];
+        }
+    }
+    int A[max + 1];
+
+    for (int i = 0; i < max + 1; i++)
+    {
+        A[i] = 0;
+    }
+
+    for (int i = 0; i < this->length; i++)
+    {
+        int p = this->p[i];
+        A[p]++;
+    }
+
+    for (int i = 0; i < max + 1; i++)
+    {
+        if (A[i] > 1)
+        {
+            std::cout << i << " " << A[i] << std::endl;
+        }
+    }
+}
+template <typename T>
+void ArrayADT<T>::DisplayDuplicatesCount3()
+{
+    int count = 0;
+    for (int i = 0; i < this->length - 1; i++)
+    {
+        count = 1;
+        if (this->p[i] != -1)
+        {
+            for (int j = i + 1; j < this->length; j++)
+            {
+                if (this->p[j] == this->p[i])
+                {
+                    count++;
+                    this->p[j] = -1;
+                }
+            }
+        }
+        if (count > 1)
+        {
+            std::cout << this->p[i] << " " << count << std::endl;
+        }
+    }
+}
 template class ArrayADT<int>;
 template class ArrayADT<double>;
 template class ArrayADT<float>;
