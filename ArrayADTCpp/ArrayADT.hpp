@@ -1,6 +1,7 @@
 #ifndef ARRAYADT_H
 #define ARRAYADT_H
 #include <stdlib.h>
+#include <utility>
 template <typename T>
 class ArrayADT
 {
@@ -57,5 +58,7 @@ public:
     void TwoSum(int k);
     /*Fina a pair with sum of k in a sorted array*/
     void TwoSumSorted(int k);
+    /*Max and min in a single scan*/
+    std::pair<int,int> MaxMin();
 };
 #endif

@@ -658,17 +658,43 @@ void ArrayADT<T>::TwoSumSorted(int k)
 
     while (i < j)
     {
-        if(this->p[i]+this->p[j]==k){
-            std::cout<<this->p[i]<<" "<<this->p[j]<<std::endl;
+        if (this->p[i] + this->p[j] == k)
+        {
+            std::cout << this->p[i] << " " << this->p[j] << std::endl;
             i++;
             j--;
         }
-        else if(this->p[i]+this->p[j]>k){
+        else if (this->p[i] + this->p[j] > k)
+        {
             j--;
-        }else if(this->p[i]+this->p[j]<k){
+        }
+        else if (this->p[i] + this->p[j] < k)
+        {
             i++;
         }
     }
+}
+template <typename T>
+std::pair<int, int> ArrayADT<T>::MaxMin()
+{
+    std::pair<int, int> ans;
+    int max = INT_MIN;
+    int min = INT_MAX;
+    for (int i = 0; i < this->length; i++)
+    {
+        if (this->p[i] > max)
+        {
+            max = this->p[i];
+        }
+        if (this->p[i] < min)
+        {
+            min = this->p[i];
+        }
+    }
+    ans.first=min;
+    ans.second=max;
+
+    return ans;
 }
 template class ArrayADT<int>;
 template class ArrayADT<double>;
