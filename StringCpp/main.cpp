@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 
 int Length(char *p)
 {
@@ -93,7 +94,7 @@ void DuplicateBitWise(char *x)
     while (*curr != '\0')
     {
         X = 1;
-        int temp = *curr-97;
+        int temp = *curr - 97;
         X = X << temp;
         if ((X & H) > 0)
         {
@@ -106,9 +107,155 @@ void DuplicateBitWise(char *x)
         curr++;
     }
 }
-int main()
+void Compare(char *p, char *q)
+{
+    char *i = p;
+    char *j = q;
+
+    while (*i != '\0' && *j != '\0')
+    {
+        if (*i != *j)
+        {
+            break;
+        }
+        i++;
+        j++;
+    }
+    if (*i == *j)
+    {
+        std::cout << "Equal" << std::endl;
+    }
+    else if (*i < *j)
+    {
+        std::cout << "1st string is less than second" << std::endl;
+    }
+    else
+    {
+        std::cout << "2nd string is less than first" << std::endl;
+    }
+}
+bool isPalin(char *p)
+{
+    char *curr = &p[0];
+    char *back = &p[0];
+
+    while (*back != '\0')
+    {
+
+        back++;
+    }
+    back--;
+    while (curr != back)
+    {
+        if (*curr != *back)
+        {
+            return false;
+        }
+        curr++;
+        back--;
+    }
+    return true;
+}
+void Duplicates(char *p)
+{
+    int A[26];
+    int i = 0;
+    for (; i < 26; i++)
+    {
+        A[i] = 0;
+    }
+    char *curr = p;
+
+    while (*curr != '\0')
+    {
+        int diff = *curr - 97;
+        A[diff]++;
+        curr++;
+    }
+    for (i = 0; i < 26; i++)
+    {
+        if (A[i] > 1)
+        {
+            char out = i + 97;
+            std::cout << out << std::endl;
+        }
+    }
+}
+bool isAnagram(char *s, char *t)
+{
+    int SLength = strlen(s);
+    int TLength = strlen(t);
+    if (SLength != TLength)
+    {
+        return false;
+    }
+    int A[26] = {0};
+    char *curr = &s[0];
+    while (*curr != '\0')
+    {
+        SLength++;
+        curr++;
+    }
+    curr = &t[0];
+    while (*curr != '\0')
+    {
+        TLength++;
+        curr++;
+    }
+
+    curr = &s[0];
+    while (*curr != '\0')
+    {
+        int diff = *curr - 97;
+
+        A[diff]++;
+
+        curr++;
+    }
+
+    curr = &t[0];
+
+    while (*curr != '\0')
+    {
+        int diff = *curr - 97;
+        A[diff]--;
+        curr++;
+    }
+    int i;
+    for (i = 0; i < 26; i++)
+    {
+        if (A[i] != 0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+void swap(char *a, char *b)
+{
+    char temp = *a;
+    *a = *b;
+    *b = temp;
+}
+void Permute(char *c, int i, int n)
 {
 
-    char x[] = "hello";
-    DuplicateBitWise(&x[0]);
+    if (i == n - 1)
+    {
+        printf("%s\n", c);
+        return;
+    }
+    for (int j = i; j < n; j++)
+    {
+        swap(&c[i], &c[j]);
+        Permute(c, i + 1, n);
+        swap(&c[i], &c[j]);
+    }
+}
+
+int main()
+{
+    char x[] = "abc";
+    Permute(&x[0], 0, 3);
+    return 0;
 }
