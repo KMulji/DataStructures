@@ -64,33 +64,51 @@ void Reverse(char *x)
     int j = 0;
     char *curr = &x[0];
 
-    while (*curr!='\0'){
+    while (*curr != '\0')
+    {
         j++;
         curr++;
     }
-    j=j-1;
+    j = j - 1;
 
-    int i=0;
+    int i = 0;
 
-    while(i!=j){
+    while (i != j)
+    {
 
         char temp = x[i];
-        x[i]=x[j];
-        x[j]=temp;
+        x[i] = x[j];
+        x[j] = temp;
         i++;
         j--;
+    }
+}
+void DuplicateBitWise(char *x)
+{
+    long int H = 0;
+    long int X = 0;
+
+    char *curr = &x[0];
+
+    while (*curr != '\0')
+    {
+        X = 1;
+        int temp = *curr-97;
+        X = X << temp;
+        if ((X & H) > 0)
+        {
+            std::cout << *curr << std::endl;
+        }
+        else
+        {
+            H = X | H;
+        }
+        curr++;
     }
 }
 int main()
 {
 
-    char x[] = "Hello";
-    Reverse(&x[0]);
-    char* curr = &x[0];
-
-    while(*curr!='\0'){
-        std::cout<<*curr<<std::endl;
-        curr++;
-    }
-    return 0;
+    char x[] = "hello";
+    DuplicateBitWise(&x[0]);
 }
