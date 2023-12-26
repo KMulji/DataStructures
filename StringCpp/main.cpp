@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string.h>
-
+#include <vector>
+#include <algorithm>
+using std::vector;
 int Length(char *p)
 {
     int i = 0;
@@ -252,10 +254,60 @@ void Permute(char *c, int i, int n)
         swap(&c[i], &c[j]);
     }
 }
+void backtrack(vector<int> &nums, int start, vector<vector<int>> &ans, vector<int> &path);
+vector<vector<int>> permute2(vector<int> &nums)
+{
+    vector<vector<int>> ans;
+    vector<int> path;
+    backtrack(nums, 0, ans, path);
+
+    return ans;
+}
+void backtrack(vector<int> &nums, int start, vector<vector<int>> &ans, vector<int> &path)
+{
+    if (path.size() == nums.size())
+    {
+        ans.push_back(path);
+        return;
+    }
+    for (int j = start; j < nums.size(); j++)
+    {
+        if (std::find(path.begin(), path.end(), nums[j]) != path.end())
+        {
+            continue;
+        }
+        path.push_back(nums[j]);
+        backtrack(nums, start, ans, path);
+        path.pop_back();
+    }
+}
+
+void backtrack2(vector<int> &nums, int start, vector<vector<int>> &ans, vector<int> &path);
+vector<vector<int>> SubSets(vector<int> &nums)
+{
+    vector<vector<int>> ans;
+    vector<int> path;
+    backtrack2(nums,0,ans,path);
+    return ans;
+}
+void backtrack2(vector<int> &nums, int start, vector<vector<int>> &ans, vector<int> &path)
+{
+    ans.push_back(path);
+
+    for (int j = start; j < nums.size(); j++)
+    {
+        //select
+        path.push_back(nums[j]);
+        //backtrack
+        backtrack2(nums,j+1,ans,path);
+        //unselect
+        path.pop_back();
+    }
+}
 
 int main()
 {
-    char x[] = "abc";
-    Permute(&x[0], 0, 3);
+    vector<int> nums = {1, 2, 3};
+    SubSets(nums);
     return 0;
 }
