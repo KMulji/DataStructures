@@ -7,11 +7,11 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "-lm",
                 "${file}",
                 "-o",
-                
-                "${fileDirname}/${fileBasenameNoExtension}"
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-lm"
+
             ],
             "options": {
                 "cwd": "${fileDirname}"

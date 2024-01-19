@@ -68,7 +68,7 @@ void LowerTriangle::ColDisplay()
         {
             if (i >= j)
             {
-                int index = this->n * (j - 1) + (j - 2) * (j - 1) / 2 + i - j;
+                int index = (this->n * (j-1) - (((j-2) * (j-1))/2)) + (i-j);
                 std::cout << this->a[index] << " ";
             }
             else
@@ -83,7 +83,7 @@ int LowerTriangle::ColGet(int i, int j)
 {
     if (i >= j)
     {
-        int index = this->n * (j - 1) + (j - 2) * (j - 1) / 2 + i - j;
+        int index = (this->n * (j-1) - (((j-2) * (j-1))/2)) + (i-j);
         return this->a[index];
     }
     return 0;
@@ -92,7 +92,7 @@ void LowerTriangle::ColSet(int i, int j, int elem)
 {
     if (i >= j)
     {
-        int index = this->n * (j - 1) + (j - 2) * (j - 1) / 2 + i - j;
+        int index = (this->n * (j-1) - (((j-2) * (j-1))/2)) + (i-j);
         this->a[index] = elem;
     }
 }
@@ -105,7 +105,7 @@ int main()
         {
             if (i >= j)
             {
-                T.ColSet(i, i, j);
+                T.ColSet(i, j, i);
             }
         }
     }
