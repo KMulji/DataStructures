@@ -112,16 +112,33 @@ int MaxElement(struct LinkedList *ll)
 }
 int RecursiveMax(struct Node *curr)
 {
-    int max=-23744;
+    int max = -23744;
 
-    if(!curr){
+    if (!curr)
+    {
         return max;
     }
-    max=RecursiveMax(curr->next);
-    if(curr->val>max){
+    max = RecursiveMax(curr->next);
+    if (curr->val > max)
+    {
         return curr->val;
     }
     return max;
+}
+
+struct Node *LinearSearch(struct LinkedList *ll, int key)
+{
+    struct Node *curr = ll->Head;
+
+    while (curr)
+    {
+        if (curr->val == key)
+        {
+            return curr;
+        }
+        curr = curr->next;
+    }
+    return NULL;
 }
 int main()
 {
@@ -129,7 +146,11 @@ int main()
     struct LinkedList *ll = Create(A, 4);
 
     RecursiveDisp(ll->Head);
-
-    printf("max is %d", RecursiveMax(ll->Head));
+    if (LinearSearch(ll, 80)==NULL)
+    {
+        printf("not found");
+    }else{
+        printf("search is %d", LinearSearch(ll, 80)->val);
+    }
     return 0;
 }
