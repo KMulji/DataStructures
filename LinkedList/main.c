@@ -50,7 +50,7 @@ void Display(struct LinkedList *ll)
 
         curr = curr->next;
     }
-    printf("Length is %d", ll->length);
+    printf("Length is %d\n", ll->length);
 }
 void RecursiveDisp(struct Node *curr)
 {
@@ -140,17 +140,184 @@ struct Node *LinearSearch(struct LinkedList *ll, int key)
     }
     return NULL;
 }
+/*
+    The idea is to move a node to the start each time we find it
+*/
+
+struct Node *LinearSearch2(struct LinkedList *ll, int key)
+{
+    struct Node *curr = ll->Head;
+    struct Node *prev = NULL;
+
+    while (curr)
+    {
+        if (curr->val == key)
+        {
+            if (curr != ll->Head)
+            {
+                prev->next = curr->next;
+                curr->next = ll->Head;
+                ll->Head = curr;
+                return prev;
+            }
+            else
+            {
+                return curr;
+            }
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+    return NULL;
+}
+void Append(int elem, struct LinkedList *ll)
+{
+    struct Node *temp = (struct Node *)malloc(sizeof(struct Node));
+    temp->val = elem;
+    if (!ll->Head || !ll->Tail)
+    {
+        ll->Head = temp;
+        ll->Tail = temp;
+        return;
+    }
+    ll->Tail->next = temp;
+    ll->Tail = temp;
+}
+void Push(int elem, struct LinkedList *ll)
+{
+    struct Node *temp = (struct Node *)malloc(sizeof(struct Node));
+    temp->val = elem;
+    if (!ll->Head || !ll->Tail)
+    {
+
+        ll->Head = temp;
+        ll->Tail = temp;
+        return;
+    }
+    temp->next = ll->Head;
+    ll->Head = temp;
+}
+void Insert(int index, int elem, struct LinkedList *ll)
+{
+    if (index < 0 || index >= ll->length)
+    {
+        printf("out of index\n");
+        return;
+    }
+    struct Node *p = ll->Head;
+
+    if (index == 0)
+    {
+        // put to head
+        Push(elem, ll);
+    }
+    else if (index == ll->length - 1)
+    {
+        // append
+        Append(elem, ll);
+    }
+    else
+    {
+        for (int i = 0; i < index; i++)
+        {
+            p = p->next;
+        }
+        struct Node *temp = (struct Node *)malloc(sizeof(struct Node));
+        temp->val = elem;
+        temp->next = p->next;
+        p->next = temp;
+    }
+    ll->length++;
+}
+void InsertSorted(int elem, struct LinkedList *ll)
+{
+    struct Node *temp = (struct Node *)malloc(sizeof(struct Node));
+    temp->val = elem;
+
+    if (!ll->Head || !ll->Tail)
+    {
+        ll->Head = temp;
+        ll->Tail = temp;
+        ll->length++;
+        return;
+    }
+    if (elem <= ll->Head->val)
+    {
+        temp->next = ll->Head;
+        ll->Head = temp;
+        return;
+    }
+    if (elem >= ll->Tail->val)
+    {
+        ll->Tail->next = temp;
+        ll->Tail = temp;
+        return;
+    }
+    struct Node *p = ll->Head;
+    struct Node *q = NULL;
+
+    while (p)
+    {
+        if (p->val > elem)
+        {
+            break;
+        }
+        q = p;
+        p = p->next;
+    }
+
+    temp->next = q->next;
+    q->next = temp;
+    ll->length++;
+}
+int Delete(int index, struct LinkedList *ll)
+{
+    int ans = 0;
+    if (index < 0 || index >= ll->length)
+    {
+        printf("No Such Index\n");
+        return -1;
+    }
+    if (!ll->Head || !ll->Tail)
+    {
+        printf("List is empty");
+        return -1;
+    }
+    if (index == 0)
+    {
+        struct Node *temp = ll->Head;
+        ll->Head = ll->Head->next;
+        ll->length--;
+        ans = temp->val;
+        free(temp);
+        return ans;
+    }
+    struct Node *q = NULL;
+    struct Node *p = ll->Head;
+
+    for (int i = 0; i < index; i++)
+    {
+        q = p;
+        p = p->next;
+    }
+    ans = p->val;
+    q->next = p->next;
+    p->next = NULL;
+    ll->length--;
+    free(p);
+}
 int main()
 {
-    int A[] = {2, 4, 60, 8};
-    struct LinkedList *ll = Create(A, 4);
+    int A[] = {2, 4, 6, 8, 10, 12};
+    struct LinkedList *ll = Create(A, 6);
 
-    RecursiveDisp(ll->Head);
-    if (LinearSearch(ll, 80)==NULL)
-    {
-        printf("not found");
-    }else{
-        printf("search is %d", LinearSearch(ll, 80)->val);
-    }
+    Delete(0, ll);
+    Delete(0, ll);
+    Delete(0, ll);
+    Delete(0, ll);
+    Delete(0, ll);
+    
+    
+    Display(ll);
     return 0;
 }
