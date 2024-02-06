@@ -306,18 +306,67 @@ int Delete(int index, struct LinkedList *ll)
     ll->length--;
     free(p);
 }
+int CheckSorted(struct LinkedList *ll)
+{
+    struct Node *curr = ll->Head;
+
+    while (curr && curr->next)
+    {
+        if (curr->val > curr->next->val)
+        {
+            return 0;
+        }
+        curr = curr->next;
+    }
+    return 1;
+}
+void RemoveDuplicates(struct LinkedList *ll)
+{
+    if (!ll->Head)
+    {
+        printf("List is empty\n");
+        return;
+    }
+    struct Node *p = ll->Head;
+    struct Node *q = ll->Head->next;
+
+    while (p && q)
+    {
+        if (p->val == q->val)
+        {
+            p->next = q->next;
+            free(q);
+            q = p->next;
+        }
+        else
+        {
+            p = q;
+            q = q->next;
+        }
+    }
+}
+void Reverse(struct LinkedList *ll)
+{
+    struct Node *k = ll->Head;
+    struct Node *i = NULL;
+    struct Node *j = NULL;
+
+    while (k)
+    {
+        i = j;
+        j = k;
+        k = k->next;
+
+        j->next=i;
+    }
+    ll->Tail=ll->Head;
+    ll->Head=j;
+}
 int main()
 {
-    int A[] = {2, 4, 6, 8, 10, 12};
+    int A[] = {3, 5, 5, 5, 8, 8};
     struct LinkedList *ll = Create(A, 6);
-
-    Delete(0, ll);
-    Delete(0, ll);
-    Delete(0, ll);
-    Delete(0, ll);
-    Delete(0, ll);
-    
-    
+    Reverse(ll);
     Display(ll);
     return 0;
 }
