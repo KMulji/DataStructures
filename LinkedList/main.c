@@ -357,16 +357,47 @@ void Reverse(struct LinkedList *ll)
         j = k;
         k = k->next;
 
-        j->next=i;
+        j->next = i;
     }
-    ll->Tail=ll->Head;
-    ll->Head=j;
+    ll->Tail = ll->Head;
+    ll->Head = j;
 }
+void RecursiveReverse(struct Node *p, struct Node *q, struct LinkedList *ll)
+{
+    if (!p)
+    {
+        ll->Tail = ll->Head;
+        ll->Head = q;
+    }
+    else
+    {
+        RecursiveReverse(p->next, p, ll);
+        p->next = q;
+    }
+}
+int HasCycle(struct LinkedList *ll)
+{
+    struct Node *slow = ll->Head;
+    struct Node *fast = ll->Head;
+
+    while (fast)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+
+        if (slow == fast)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int main()
 {
     int A[] = {3, 5, 5, 5, 8, 8};
     struct LinkedList *ll = Create(A, 6);
-    Reverse(ll);
+    RecursiveReverse(ll->Head, NULL, ll);
     Display(ll);
     return 0;
 }
