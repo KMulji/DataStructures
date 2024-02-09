@@ -375,6 +375,64 @@ void RecursiveReverse(struct Node *p, struct Node *q, struct LinkedList *ll)
         p->next = q;
     }
 }
+struct LinkedList *Merge(struct LinkedList *ll1, struct LinkedList *ll2)
+{
+    struct Node *first = ll1->Head;
+    struct Node *second = ll2->Head;
+    struct Node *third = NULL;
+    struct Node *last = NULL;
+
+    if (first->val < second->val)
+    {
+        third = first;
+        last = first;
+        first = first->next;
+        last->next = NULL;
+    }
+    else
+    {
+        third = second;
+        last = second;
+        second = second->next;
+        last->next = NULL;
+    }
+
+    while (first && second)
+    {
+        if (first->val < second->val)
+        {
+            last->next = first;
+            last = first;
+            first = first->next;
+            last->next = NULL;
+        }
+        else
+        {
+            last->next = second;
+            last = second;
+            second = second->next;
+            last->next = NULL;
+        }
+    }
+    if (first)
+    {
+        last->next = first;
+    }
+    if (second)
+    {
+        last->next = second;
+    }
+    struct LinkedList *ll3 = (struct LinkedList *)malloc(sizeof(struct LinkedList));
+    ll3->length = ll1->length + ll2->length;
+    ll3->Head = third;
+    struct Node *curr = ll3->Head;
+    while (curr->next)
+    {
+        curr = curr->next;
+    }
+    ll3->Tail = curr;
+    return ll3;
+}
 int HasCycle(struct LinkedList *ll)
 {
     struct Node *slow = ll->Head;
@@ -395,9 +453,11 @@ int HasCycle(struct LinkedList *ll)
 
 int main()
 {
-    int A[] = {3, 5, 5, 5, 8, 8};
+    int A[] = {1, 3, 5, 7, 9, 11};
+    int A1[] = {2, 4, 6, 8};
     struct LinkedList *ll = Create(A, 6);
-    RecursiveReverse(ll->Head, NULL, ll);
-    Display(ll);
+    struct LinkedList *ll2 = Create(A1, 4);
+    struct LinkedList *ll3 = Merge(ll, ll2);
+    Display(ll3);
     return 0;
 }
