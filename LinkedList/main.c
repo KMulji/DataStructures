@@ -199,7 +199,7 @@ void Push(int elem, struct LinkedList *ll)
 }
 void Insert(int index, int elem, struct LinkedList *ll)
 {
-    if (index < 0 || index >= ll->length)
+    if (index < 0 || index >= ll->length+1)
     {
         printf("out of index\n");
         return;
@@ -211,14 +211,14 @@ void Insert(int index, int elem, struct LinkedList *ll)
         // put to head
         Push(elem, ll);
     }
-    else if (index == ll->length - 1)
+    else if (index == ll->length)
     {
         // append
         Append(elem, ll);
     }
     else
     {
-        for (int i = 0; i < index; i++)
+        for (int i = 0; i < index-1; i++)
         {
             p = p->next;
         }
@@ -454,10 +454,8 @@ int HasCycle(struct LinkedList *ll)
 int main()
 {
     int A[] = {1, 3, 5, 7, 9, 11};
-    int A1[] = {2, 4, 6, 8};
-    struct LinkedList *ll = Create(A, 6);
-    struct LinkedList *ll2 = Create(A1, 4);
-    struct LinkedList *ll3 = Merge(ll, ll2);
-    Display(ll3);
+    struct LinkedList* ll = Create(A,6);
+    Insert(7,20,ll);
+    Display(ll);
     return 0;
 }
