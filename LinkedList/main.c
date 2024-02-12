@@ -453,9 +453,9 @@ int HasCycle(struct LinkedList *ll)
 
 int main()
 {
-    int A[] = {1, 3, 5, 7, 9, 11};
-    struct LinkedList* ll = Create(A,6);
-    Insert(7,20,ll);
-    Display(ll);
+    int A[] = {1};
+    struct LinkedList* ll = Create(A,1);
+
+    Delete(0,ll);
     return 0;
 }
