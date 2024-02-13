@@ -147,8 +147,8 @@ int main()
 {
     int A[] = {1, 2, 3, 4, 5};
     struct CircleList *ans = Create(A, 5);
-    Insert(5, 20, ans);
-    Delete(5, ans);
+    
+    Delete(2, ans);
     Display(ans);
     return 0;
 }
