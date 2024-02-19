@@ -23,8 +23,14 @@ void Push(struct Stack *st, int val)
 {
     if (st->length == st->size)
     {
-        printf("Stack overflow\n");
-        return;
+        int *temp = (int *)malloc(2 * st->size * sizeof(int));
+        for (int i = 0; i < st->length; i++)
+        {
+            temp[i] = st->a[i];
+        }
+        st->size = 2 * st->size;
+        free(st->a);
+        st->a = temp;
     }
     st->top++;
     st->a[st->top] = val;
@@ -46,6 +52,17 @@ int Pop(struct Stack *st)
         printf("Stack Underflow\n");
         return -1;
     }
+    if (st->length <= st->size * 0.5)
+    {
+        st->size = 0.5 * st->size;
+        int *temp = (int *)malloc(st->size * sizeof(int));
+        for (int i = 0; i < st->length; i++)
+        {
+            temp[i] = st->a[i];
+        }
+        free(st->a);
+        st->a = temp;
+    }
     int ans = st->top;
     st->a[st->top] = 0;
     st->top--;
@@ -54,12 +71,12 @@ int Pop(struct Stack *st)
 }
 int Peek(struct Stack *st, int index)
 {
-    if(st->top-index+1<0)
+    if (st->top - index + 1 < 0)
     {
         printf("Invalid Index\n");
         return -1;
     }
-    return st->a[st->top-index+1];
+    return st->a[st->top - index + 1];
 }
 int main()
 {
@@ -69,7 +86,13 @@ int main()
     Push(temp, 30);
     Push(temp, 40);
     Push(temp, 50);
-    Pop(temp);
-    Pop(temp);
+    Push(temp, 60);
+    // Pop(temp);
+    // Pop(temp);
+    // Pop(temp);
+    // Pop(temp);
+    // Pop(temp);
+    // Pop(temp);
+    // Pop(temp);
     Display(temp);
 }
