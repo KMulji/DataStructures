@@ -71,28 +71,22 @@ int Pop(struct Stack *st)
 }
 int Peek(struct Stack *st, int index)
 {
-    if (st->top - index + 1 < 0)
+    if (st->top - index < 0)
     {
         printf("Invalid Index\n");
         return -1;
     }
-    return st->a[st->top - index + 1];
+    return st->a[st->top - index];
+}
+int StackTop(struct Stack *st)
+{
+    return st->top == -1 ? -1 : st->a[st->top];
 }
 int main()
 {
     struct Stack *temp = Create(5);
     Push(temp, 10);
-    Push(temp, 20);
-    Push(temp, 30);
-    Push(temp, 40);
-    Push(temp, 50);
-    Push(temp, 60);
-    // Pop(temp);
-    // Pop(temp);
-    // Pop(temp);
-    // Pop(temp);
-    // Pop(temp);
-    // Pop(temp);
-    // Pop(temp);
+    
+    printf("%d\n", StackTop(temp));
     Display(temp);
 }
