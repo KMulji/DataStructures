@@ -42,12 +42,12 @@ void Enqueue(struct Queue *qt, int elem)
 }
 int Dequeue(struct Queue *qt)
 {
-    if (qt->end == qt->top)
+    if (qt->len==0)
     {
         printf("Queue is empty\n");
         return -1;
     }
-    int x = 1;
+    int x = -1;
     x = qt->top;
     qt->top++;
     qt->len--;
@@ -55,7 +55,7 @@ int Dequeue(struct Queue *qt)
 }
 void Display(struct Queue *qt)
 {
-    if (qt->top == qt->end)
+    if (qt->len==0)
     {
         printf("Queue is empty\n");
         return;
@@ -78,7 +78,7 @@ int main()
     Display(qt);
     for (int i = 0; i < 10; i++)
     {
-        printf("Removed %d\n", Dequeue(qt));
+        printf("Removing %d\n", Dequeue(qt));
     }
     Display(qt);
     return 0;
