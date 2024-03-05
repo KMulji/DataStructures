@@ -63,9 +63,9 @@ int main()
         Enqueue(qt, i);
     }
 
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 2; i++)
     {
-        printf("%d \n", Dequeue(qt));
+        printf("Removed %d\n", Dequeue(qt));
     }
     Display(*qt);
     return 0;
