@@ -93,14 +93,17 @@ void PostOrder(struct Node *root)
     PostOrder(root->right);
     std::cout << root->Data << std::endl;
 }
+void InorderIterative(struct Node *root)
+{
+}
 int main()
 {
     struct BinaryTree *bt = Create();
     PreOrder(bt->Root);
-    std::cout<<" "<<std::endl;
+    std::cout << " " << std::endl;
     InOrder(bt->Root);
-    std::cout<<" "<<std::endl;
+    std::cout << " " << std::endl;
     PostOrder(bt->Root);
-    std::cout<<" "<<std::endl;
+    std::cout << " " << std::endl;
     return 0;
 }
