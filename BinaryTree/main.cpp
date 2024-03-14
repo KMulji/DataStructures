@@ -1,8 +1,8 @@
 #include <iostream>
 #include <queue>
-
+#include <stack>
 using std::queue;
-
+using std::stack;
 struct Node
 {
     int Data;
@@ -93,17 +93,82 @@ void PostOrder(struct Node *root)
     PostOrder(root->right);
     std::cout << root->Data << std::endl;
 }
-void InorderIterative(struct Node *root)
+void PreorderIterative(struct Node *t)
 {
+    stack<Node *> st;
+    st.push(t);
+
+    while (!st.empty() || t == NULL)
+    {
+        if (t != NULL)
+        {
+            std::cout << t->Data << std::endl;
+            st.push(t);
+            t = t->left;
+        }
+        else
+        {
+            t = st.top();
+            st.pop();
+            t = t->right;
+        }
+    }
 }
+void InorderIterative(struct Node *t)
+{
+    stack<Node *> st;
+    while (t != NULL || !st.empty())
+    {
+        if (t != NULL)
+        {
+            st.push(t);
+            t = t->left;
+        }
+        else
+        {
+            t = st.top();
+            st.pop();
+            std::cout << t->Data << std::endl;
+            t = t->right;
+        }
+    }
+}
+int CountLeaf(struct Node *t)
+{
+    if (!t)
+    {
+        return 0;
+    }
+    if (!t->left && !t->right)
+    {
+        return 1;
+    }
+    return CountLeaf(t->left) + CountLeaf(t->right);
+}
+void LevelOrder(struct Node *t)
+{
+    queue<Node *> qt;
+    qt.push(t);
+    while (!qt.empty())
+    {
+        struct Node *temp = qt.front();
+        qt.pop();
+        std::cout << temp->Data << std::endl;
+        if (temp->left)
+        {
+            qt.push(temp->left);
+        }
+        if (temp->right)
+        {
+            qt.push(temp->right);
+        }
+    }
+}
+
 int main()
 {
     struct BinaryTree *bt = Create();
-    PreOrder(bt->Root);
-    std::cout << " " << std::endl;
-    InOrder(bt->Root);
-    std::cout << " " << std::endl;
-    PostOrder(bt->Root);
-    std::cout << " " << std::endl;
+    LevelOrder(bt->Root);
+
     return 0;
 }
