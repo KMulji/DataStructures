@@ -1,4 +1,7 @@
 #include <iostream>
+#include <stack>
+
+using std::stack;
 struct Node
 {
     int data;
@@ -250,13 +253,82 @@ struct Node *Delete(struct Node *r, int key)
     }
     return r;
 }
+/*
+    Generate BST from a given pre order traversal
+*/
+struct BST *Generate(int pre[], int n)
+{
+    struct BST *bt = (struct BST *)malloc(sizeof(struct BST));
+    int i = 0;
+    struct Node *t;
+    stack<long long int> st;
+    // create root
+    struct Node *r = (struct Node *)malloc(sizeof(struct Node));
+    r->data = pre[0];
+    r->left = NULL;
+    r->right = NULL;
+    bt->Root = r;
+    r = NULL;
+    t = bt->Root;
+    st.push(reinterpret_cast<long long int>(t));
+    i = 1;
+    while (i < n)
+    {
+        // if its less put on left side.
+        if (pre[i] < t->data)
+        {
+            r = (struct Node *)malloc(sizeof(struct Node));
+            r->data = pre[i];
+            i++;
+            r->left = NULL;
+            r->right = NULL;
+            t->left = r;
+            st.push(reinterpret_cast<long long int>(t));
+            t = r;
+            r = NULL;
+        }
+        // 
+        else
+        {
+            //
+            if (pre[i] > t->data && st.empty())
+            {
+                r = (struct Node *)malloc(sizeof(struct Node));
+                r->data = pre[i];
+                r->left = NULL;
+                r->right = NULL;
+                i++;
+                t->right = r;
+                t = r;
+                r = NULL;
+            }
+            //
+            else if (pre[i] > t->data && pre[i] < reinterpret_cast<struct Node *>(st.top())->data)
+            {
+                r = (struct Node *)malloc(sizeof(struct Node));
+                r->data = pre[i];
+                r->left = NULL;
+                r->right = NULL;
+                i++;
+                t->right = r;
+                t = r;
+                r = NULL;
+            }
+            //
+            else
+            {
+                t = reinterpret_cast<struct Node *>(st.top());
+                st.pop();
+            }
+        }
+    }
+
+    return bt;
+}
 int main()
 {
-    struct BST *bt = Create();
-    std::cout << "Before Delete" << std::endl;
-    InOrder(bt->Root);
-    Delete(bt->Root, 20);
-    std::cout << "After Delete" << std::endl;
+    int a[] = {30, 20, 10, 15, 25, 40, 50, 45};
+    struct BST *bt = Generate(a, 8);
     InOrder(bt->Root);
     return 0;
 }
