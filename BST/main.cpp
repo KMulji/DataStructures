@@ -253,6 +253,7 @@ struct Node *Delete(struct Node *r, int key)
     }
     return r;
 }
+
 /*
     Generate BST from a given pre order traversal
 */
@@ -287,7 +288,7 @@ struct BST *Generate(int pre[], int n)
             t = r;
             r = NULL;
         }
-        // 
+        // if its greater than you need to put on right.
         else
         {
             //
@@ -329,6 +330,9 @@ int main()
 {
     int a[] = {30, 20, 10, 15, 25, 40, 50, 45};
     struct BST *bt = Generate(a, 8);
+    InOrder(bt->Root);
+    Delete(bt->Root, 10);
+    std::cout << "" << std::endl;
     InOrder(bt->Root);
     return 0;
 }
