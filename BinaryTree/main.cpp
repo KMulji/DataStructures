@@ -169,6 +169,6 @@ int main()
 {
     struct BinaryTree *bt = Create();
     LevelOrder(bt->Root);
-
+    std ::cout << CountLeaf(bt->Root) << std::endl;
     return 0;
 }
