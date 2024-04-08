@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <cstdint>
 using std::queue;
 using std::stack;
 struct Node
@@ -93,6 +94,37 @@ void PostOrder(struct Node *root)
     PostOrder(root->right);
     std::cout << root->Data << std::endl;
 }
+void PostOrderIterative(struct Node *t)
+{
+    stack<long long int> st;
+    long long int temp;
+
+    while (t != NULL || !st.empty())
+    {
+        if (t != NULL)
+        {
+
+            st.push(reinterpret_cast<long long int>(t));
+            t = t->left;
+        }
+        else
+        {
+            long long int temp = st.top();
+            st.pop();
+            if (temp > 0)
+            {
+                st.push(reinterpret_cast<long long int>(-temp));
+                t = reinterpret_cast<struct Node *>(temp)->right;
+            }
+            else
+            {
+                temp = -temp;
+                std::cout << reinterpret_cast<struct Node *>(temp)->Data << std::endl;
+                t = NULL;
+            }
+        }
+    }
+}
 void PreorderIterative(struct Node *t)
 {
     stack<Node *> st;
@@ -145,6 +177,22 @@ int CountLeaf(struct Node *t)
     }
     return CountLeaf(t->left) + CountLeaf(t->right);
 }
+int Height(struct Node *t)
+{
+    if (!t)
+    {
+        return 0;
+    }
+
+    int x = Height(t->left);
+    int y = Height(t->right);
+
+    if (x > y)
+    {
+        return x + 1;
+    }
+    return y + 1;
+}
 void LevelOrder(struct Node *t)
 {
     queue<Node *> qt;
@@ -164,11 +212,25 @@ void LevelOrder(struct Node *t)
         }
     }
 }
+int count(struct Node *t)
+{
+    if (!t)
+    {
+        return 0;
+    }
+    int left = count(t->left);
+    int right = count(t->right);
 
+    return 1 + left + right;
+}
+int rootLeafPaths(struct Node *t)
+{
+    
+}
 int main()
 {
     struct BinaryTree *bt = Create();
-    LevelOrder(bt->Root);
-    std ::cout << CountLeaf(bt->Root) << std::endl;
+    std::cout << count(bt->Root) << std::endl;
+
     return 0;
 }
