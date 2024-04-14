@@ -65,6 +65,46 @@ struct Node *RRotation(struct Node *p, struct AVL *avl)
 
     return pr;
 }
+struct Node *LRRotation(struct Node *p, struct AVL *avl)
+{
+    struct Node *pl = p->left;
+    struct Node *plr = pl->right;
+
+    pl->right = plr->left;
+    p->left = plr->right;
+
+    plr->left = pl;
+    plr->right = p;
+    p->height = CalcNodeHeight(p);
+    pl->height = CalcNodeHeight(pl);
+    plr->height = CalcNodeHeight(plr);
+
+    if (p == avl->root)
+    {
+        avl->root = plr;
+    }
+    return plr;
+}
+struct Node *RLRotation(struct Node *p, struct AVL *avl)
+{
+    struct Node *pr = p->right;
+    struct Node *prl = pr->left;
+
+    p->right = prl->left;
+    pr->left = prl->right;
+
+    prl->right = pr;
+    prl->left = p;
+
+    p->height = CalcNodeHeight(p);
+    prl->height = CalcNodeHeight(prl);
+    pr->height = CalcNodeHeight(pr);
+    if (p == avl->root)
+    {
+        avl->root = prl;
+    }
+    return prl;
+}
 struct Node *Insert(struct Node *r, int key, struct AVL *avl)
 {
     if (r == NULL)
@@ -89,25 +129,77 @@ struct Node *Insert(struct Node *r, int key, struct AVL *avl)
         r->right = Insert(r->right, key, avl);
     }
     r->height = CalcNodeHeight(r);
+    // LL rotation
     if (NodeBalanceFactor(r) == 2 && NodeBalanceFactor(r->left) == 1)
     {
         return LLRotation(r, avl);
     }
+    // LR rotation
+    else if (NodeBalanceFactor(r) == 2 && NodeBalanceFactor(r->left) == -1)
+    {
+        return LRRotation(r, avl);
+    }
+    // rr rotation
     else if (NodeBalanceFactor(r) == -2 && NodeBalanceFactor(r->right) == -1)
     {
         return RRotation(r, avl);
     }
+    // RL rotation
+    else if (NodeBalanceFactor(r) == -2 && NodeBalanceFactor(r->right) == 1)
+    {
+        return RLRotation(r, avl);
+    }
     return r;
 }
+struct Node *InPre(struct Node *p)
+{
+}
+struct Node *Delete(struct Node *p, struct AVL *avl, int key)
+{
+    if (!p)
+    {
+        return NULL;
+    }
+    if (!p->left && !p->right)
+    {
+        if (p == avl->root)
+        {
+            avl->root = NULL;
+        }
+        free(p);
+        return NULL;
+    }
 
+    if (key < p->val)
+    {
+        p->left = Delete(p->left, avl, key);
+    }
+    else if (key > p->val)
+    {
+        p->right = Delete(p->right, avl, key);
+    }
+    else
+    {
+        if (CalcNodeHeight(p->left) > CalcNodeHeight(p->right))
+        {
+            
+        }
+        else if (CalcNodeHeight(p->right) > CalcNodeHeight(p->left))
+        {
+
+        }
+    }
+}
 int main()
 {
     struct AVL *avl = (struct AVL *)malloc(sizeof(struct AVL));
     Insert(avl->root, 10, avl);
-    Insert(avl->root, 15, avl);
     Insert(avl->root, 20, avl);
     Insert(avl->root, 30, avl);
-    Insert(avl->root, 40, avl);
+    Insert(avl->root, 25, avl);
+    Insert(avl->root, 28, avl);
+    Insert(avl->root, 27, avl);
+    Insert(avl->root, 5, avl);
 
     printf("......\n");
     return 0;
